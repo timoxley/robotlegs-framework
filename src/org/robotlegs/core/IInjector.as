@@ -14,11 +14,11 @@ package org.robotlegs.core
 	public interface IInjector
 	{
 		/**
-		 * When asked for an instance of the class <code>whenAskedFor</code>
-		 * inject the instance <code>useValue</code>.
+		 * When asked for an instance of the class <code>whenAskedFor</code>, always
+		 * inject the supplied instance <code>useValue</code>.
 		 *
-		 * <p>This is used to register an existing instance with the injector
-		 * and treat it like a Singleton.</p>
+		 * <p>Eager Loading. Registers an existing instance with the injector
+		 * and <strong>treats it like a Singleton</strong>.</p>
 		 *
 		 * @param whenAskedFor A class or interface
 		 * @param useValue An instance
@@ -32,7 +32,7 @@ package org.robotlegs.core
 		 * When asked for an instance of the class <code>whenAskedFor</code>
 		 * inject a new instance of <code>instantiateClass</code>.
 		 *
-		 * <p>This will create a new instance for each injection.</p>
+		 * <p>Lazy Loading. This will create a <strong>new instance on demand for each injection.</strong></p>
 		 *
 		 * @param whenAskedFor A class or interface
 		 * @param instantiateClass A class to instantiate
@@ -43,11 +43,11 @@ package org.robotlegs.core
 		function mapClass(whenAskedFor:Class, instantiateClass:Class, named:String = ""):*;
 		
 		/**
-		 * When asked for an instance of the class <code>whenAskedFor</code>
-		 * inject an instance of <code>whenAskedFor</code>.
+		 * When asked for an instance of the class <code>whenAskedFor</code>, always
+		 * inject the same instance of <code>whenAskedFor</code>.
 		 *
-		 * <p>This will create an instance on the first injection, but
-		 * will re-use that instance for subsequent injections.</p>
+		 * <p>Lazy Loading. This will create an instance on the first injection, but
+		 * <strong>will always supply that specific instance</strong> for subsequent injections.</p>
 		 *
 		 * @param whenAskedFor A class or interface
 		 * @param named An optional name (id)
@@ -61,8 +61,8 @@ package org.robotlegs.core
 		 * When asked for an instance of the class <code>whenAskedFor</code>
 		 * inject an instance of <code>useSingletonOf</code>.
 		 *
-		 * <p>This will create an instance on the first injection, but
-		 * will re-use that instance for subsequent injections.</p>
+		 * <p>Lazy Loading. This will create an instance on the first injection, but
+		 * <strong> will always supply that specific instance</strong> for subsequent injections.</p>
 		 *
 		 * @param whenAskedFor A class or interface
 		 * @param useSingletonOf A class to instantiate
@@ -88,7 +88,7 @@ package org.robotlegs.core
 		function mapRule(whenAskedFor:Class, useRule:*, named:String = ""):*;
 		
 		/**
-		 * Perform an injection into an object, satisfying all it's dependencies
+		 * Perform an injection into an object, satisfying all its dependencies
 		 *
 		 * <p>The <code>IInjector</code> should throw an <code>Error</code>
 		 * if it can't satisfy all dependencies of the injectee.</p>
