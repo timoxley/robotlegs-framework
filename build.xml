@@ -2,6 +2,8 @@
 <project name="robotlegs-framework" basedir="." default="test">
 <!-- set up a prefix for all environment variables -->
   <property environment="env."/>
+<!-- load user properties to override defaults -->
+  <property file="user.properties"/>
 <!-- System environment must contain FLEX_HOME variable that points to Flex SDK -->
   <property name="FLEX_HOME" location="${env.FLEX_HOME}"/>
 <!-- identify properties file -->
@@ -97,7 +99,7 @@
   </target>
 <!-- Build Documentation -->
   <target name="asdoc" depends="test">
-    <echo>[create-docs] Generating ASDOC documentation</echo>
+    <echo>[asdoc] Generating ASDOC documentation</echo>
     <tstamp>
       <format property="docgen.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
     </tstamp>
@@ -106,6 +108,8 @@
       <arg line="-doc-sources ${main.src.loc}"/>
       <arg line="-source-path ${main.src.loc}"/>
       <arg line="-output ${doc.loc}"/>
+      <arg value="-keep-xml=true"/>
+      <arg value="-lenient=true"/>
       <arg line="-window-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-main-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-footer 'Robotlegs - http://www.robotlegs.org/ - Documentation generated at: ${docgen.time}'"/>
@@ -114,7 +118,7 @@
       <arg line="-package org.robotlegs.core 'The core Robotlegs Framework apparatus contracts'"/>
       <arg line="-package org.robotlegs.mvcs 'The reference MVCS Robotlegs Framework implementation'"/>
     </java>
-    <echo>[create-docs] ASDOC documentation generated successfully</echo>
+    <echo>[asdoc] ASDOC documentation generated successfully</echo>
   </target>
 <!-- Package the Build -->
   <target name="package" depends="asdoc">
@@ -135,6 +139,14 @@
     <copy todir="${dist.loc}/docs">
       <fileset dir="${doc.loc}"/>
     </copy>
+    <delete dir="${dist.loc}/docs/tempdita"/>
+<!-- Add ASDoc xml to swc for Flex Builder Tooltips -->
+    <zip destfile="${dist.loc}/bin/${project.name.versioned}.swc" update="true">
+      <zipfileset dir="${doc.loc}/tempdita" prefix="docs">
+        <include name="*packages.dita*"/>
+        <include name="*org.*"/>
+      </zipfileset>
+    </zip>
 <!-- Copy README  -->
     <copy file="${template.loc}/README.tmpl" tofile="${dist.loc}/README" overwrite="true">
       <filterchain>
@@ -145,8 +157,8 @@
           <token key="ssversion" value="${swift.suspenders.version}"/>
           <token key="sslink" value="${swift.suspenders.link}"/>
           <token key="rlprojectlink" value="${robotlegs.project.link}"/>
-          <token key="bestpracticeslink" value="${robotlegs.faq.link}"/>
-          <token key="faqlink" value="${robotlegs.best.practices.link}"/>
+          <token key="bestpracticeslink" value="${robotlegs.best.practices.link}"/>
+          <token key="faqlink" value="${robotlegs.faq.link}"/>
         </replacetokens>
       </filterchain>
     </copy>

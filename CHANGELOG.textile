@@ -1,5 +1,38 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v1.1.2
+
+*ASDocs*
+Build script updated to bundle ASDocs into SWC for inline display in Flash Builder 4. Build needs to be run against Flex SDK 4.x
+
+h3. v1.1.1
+
+*Mediator*
+Fixed: http://github.com/robotlegs/robotlegs-framework/issues/#issue/6
+
+h3. v1.1.0
+
+*SwiftSuspenders*
+Updated SwiftSuspenders to v1.5.1
+PLEASE NOTE: mapValue no longer injects into the value instance - the old behaviour was incorrect.
+
+*Injector*
+Added IInjector#hasMapping(clazz:Class, named:String = ""):Boolean;
+Added IInjector#getInstance(clazz:Class, named:String = ""):*;
+Added IInjector#createChild():IInjector;
+
+*CommandMap*
+Added ICommandMap#execute(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void
+Added ICommandMap#unmapEvents() - unmaps all event mappings
+Added ICommandMap#detain() and release() - enables Async Commands
+
+*Mediator*
+Added mvcs.Mediator EventMap Sugar: addViewListener() and addContextListener()
+
+*Misc*
+mvcs.Context: CommandMap and MediatorMap are handed child injectors - to enable non-destructive temporary mappings.
+Deprecated IContextProvider
+
 h3. v1.0.3
 
 Fixed: http://github.com/robotlegs/robotlegs-framework/issues#issue/2
